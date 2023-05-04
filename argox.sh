@@ -218,10 +218,12 @@ argo_variable() {
 
   if [ -n "$ARGO_DOMAIN" ]; then
     [ -z "$ARGO_AUTH" ] && reading "\n $(text 11) " ARGO_AUTH
-    if [[ $ARGO_AUTH =~ TunnelSecret ]]; then
+    if [[ "$ARGO_AUTH" =~ TunnelSecret ]]; then
       ARGO_JSON=$ARGO_AUTH
-    elif [[ $ARGO_AUTH =~ ^[A-Z0-9a-z=]{120,250}$ ]]; then
+    elif [[ "$ARGO_AUTH" =~ ^[A-Z0-9a-z=]{120,250}$ ]]; then
       ARGO_TOKEN=$ARGO_AUTH
+    elif grep -qoP ".*cloudflared.*service install [A-Z0-9a-z=]{120,250}$" <<< "$ARGO_AUTH"; then
+      ARGO_TOKEN=$(awk -F ' ' '{print $NF}' <<< "$ARGO_AUTH")
     else
       error "\n $(text 45) \n"
     fi
@@ -264,6 +266,7 @@ check_dependencies() {
   fi
 }
 
+# Json 生成两个配置文件
 json_argo() {
   [ ! -e $WORK_DIR/tunnel.json ] && echo $ARGO_JSON > $WORK_DIR/tunnel.json
   [ ! -e $WORK_DIR/tunnel.yml ] && cat > $WORK_DIR/tunnel.yml << EOF
