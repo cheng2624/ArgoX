@@ -1,5 +1,5 @@
 # Language
-L='C' # C for Chinese / E for English
+L='C' # [C] for Chinese / [E] for English
 
 # Argo
 ARGO_DOMAIN=''
@@ -9,6 +9,7 @@ ARGO_AUTH=''
 # Token: ARGO_AUTH='eyJhIjoiOWNjOWUzZTRkOGYyOWQyYTAyZTI5N2YxNagyFzUxM2EiLCJ0IjoiYTcyMmUwNjYtODlmYi00ZjJmLTgagDQtOGEwOTVhNTkzM2I2IiwicyI6Ik9XTTFaak0xWWprdE16QTRNQzAwTUdVMExUbGlaV0V0TmpFek9UZzFNRGczWkdRNCJ9'
 
 # Xray
-SERVER='icook.hk'
+SERVER='www.who.int'
 UUID='ffffffff-ffff-ffff-ffff-ffffffffffff'
 WS_PATH='argox'
+RETURN='n' # [n] for not need returning on China / [y] for need returning on China

@@ -10,11 +10,14 @@
 - [Argo Json 的获取](README.md#argo-json-的获取)
 - [Argo Token 的获取](README.md#argo-token-的获取)
 - [各种场景下 xray outbound 和 routing 模板的说明](README.md#各种场景下-xray-outbound-和-routing-模板的说明)
+- [主体目录文件及说明](README.md#主体目录文件及说明)
 - [免责声明](README.md#免责声明)
 
 * * *
 ## 更新信息
-2023.6.23 For better network traffic diversion in various scenarios, split `config.json` into `inbound.json` and `outbound.json`; 为了更好的在各种情景下分流，把 `config.json` 拆分为 `inbound.json` 和 `outbound.json`
+2023.10.11 V1.2 1. Add the option of blocking on returning to China; 2. Add a number of quality cdn's that are collected online; 1. 增加禁止归国选项; 2. 增加线上收录的若干优质 cdn
+
+2023.6.23 V1.1 For better network traffic diversion in various scenarios, split `config.json` into `inbound.json` and `outbound.json`; 为了更好的在各种情景下分流，把 `config.json` 拆分为 `inbound.json` 和 `outbound.json`
 
 2023.4.13 1.0 正式版
 
@@ -62,8 +65,9 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/argox/main/argox.sh)
   | -e         | English 英文 | 
   | -f         | Variable file，refer to REPO file "config" 参数文件，可参数项目的文件 config | 
   | -u         | Uninstall 卸载 |
-  | -e         | Export Node list 显示节点信息 |
+  | -n         | Export Nodes list 显示节点信息 |
   | -v         | Sync Argo Xray to the newest 同步 Argo Xray 到最新版本 |
+  | -g         | Enable or disalbe returning to China 切换禁止回国功能的开启和关闭 |
 
 
 ## Argo Json 的获取
@@ -95,9 +99,24 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/argox/main/argox.sh)
 
 | 说明 | 模板示例 |
 | --- | ------ |
-| chatGPT 使用链式 warp 代理，不需要本地安装 warp，其余流量走 vps 默认的网络出口 | [warp](https://github.com/fscarmen/warp#通过-warp-解锁-chatgpt-的方法) |
-| 指定流量走本机指定的网络接口，对于双栈能区分 IPv4 或 IPv6，其余流量走 vps 默认的网络出口 | [interface](https://github.com/fscarmen/warp#指定网站分流到-interface-的-xray-配置模板适用于-warp-client-warp-和-warp-go-非全局) |
-| 指定流量走本机指定的socks5代理，对于双栈能区分 IPv4 或 IPv6，其余流量走 vps 默认的网络出口 | [socks5](https://github.com/fscarmen/warp#指定网站分流到-socks5-的-xray-配置模板-适用于-warp-client-proxy-和-wireproxy) |
+| chatGPT 使用链式 warp 代理，不需要本地安装 warp，其余流量走 vps 默认的网络出口 | [warp](https://gitlab.com/fscarmen/warp#通过-warp-解锁-chatgpt-的方法) |
+| 指定流量走本机指定的网络接口，对于双栈能区分 IPv4 或 IPv6，其余流量走 vps 默认的网络出口 | [interface](https://gitlab.com/fscarmen/warp#指定网站分流到-interface-的-xray-配置模板适用于-warp-client-warp-和-warp-warp-go-非全局) |
+| 指定流量走本机指定的socks5代理，对于双栈能区分 IPv4 或 IPv6，其余流量走 vps 默认的网络出口 | [socks5](https://gitlab.com/fscarmen/warp#指定网站分流到-socks5-的-xray-配置模板-适用于-warp-client-proxy-和-wireproxy) |
+
+
+## 主体目录文件及说明
+
+```
+/etc/argox                    # 项目主体目录
+├── cloudflared               # argo tunnel 主程序
+├── geoip.dat                 # 存储地理位置和域名信息文件，用于流量控制
+├── geosite.dat               # 存储地理位置和域名信息文件，用于流量控制
+├── inbound.json              # vless / vmess / ss / trojan + WSS 入站配置文件
+├── language                  # 存放脚本语言文件，E 为英文，C 为中文
+├── list                      # 节点信息列表
+├── outbound.json             # 出站和路由配置文件，chatGPT 使用 warp ipv6 链式代理出站
+└── xray                      # xray 主程序
+```
 
 
 ## 免责声明:
